@@ -8,19 +8,20 @@ import type {
 import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
 import { Hyperbrowser } from '@hyperbrowser/sdk';
 import { CreateSessionParams, Country, ScrapeOptions, ScrapeFormat } from '@hyperbrowser/sdk/types';
+import { CountryMap, CountryNameMap } from './data';
 
 export class ExampleNode implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Hyperbrowser',
-		name: 'hyperbrowserScraper',
+		name: 'hyperbrowser',
 		group: ['transform'],
 		version: 1,
 		description: 'Interact with websites using Hyperbrowser',
 		defaults: {
 			name: 'Hyperbrowser',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: [NodeConnectionType.Main], // eslint-disable-line n8n-nodes-base/node-class-description-inputs-wrong-regular-node
+		outputs: [NodeConnectionType.Main], // eslint-disable-line n8n-nodes-base/node-class-description-outputs-wrong
 		credentials: [
 			{
 				name: 'hyperbrowserApi',
@@ -85,6 +86,25 @@ export class ExampleNode implements INodeType {
 				default: {},
 				options: [
 					{
+						displayName: 'Maximum Pages',
+						name: 'maxPages',
+						type: 'number',
+						default: 10,
+						description: 'Maximum number of pages to crawl',
+						displayOptions: {
+							show: {
+								'/operation': ['crawl'],
+							},
+						},
+					},
+					{
+						displayName: 'Only Main Content',
+						name: 'onlyMainContent',
+						type: 'boolean',
+						default: true,
+						description: 'Whether to return only the main content of the page',
+					},
+					{
 						displayName: 'Output Format',
 						name: 'format',
 						type: 'options',
@@ -111,14 +131,30 @@ export class ExampleNode implements INodeType {
 						},
 					},
 					{
-						displayName: 'Only Main Content',
-						name: 'onlyMainContent',
-						type: 'boolean',
-						default: true,
-						description: 'Whether to return only the main content of the page',
+						displayName: 'Proxy Country',
+						name: 'proxyCountry',
+						type: 'options',
+						options: Object.entries(CountryMap).map(([k, v]) => ({
+							name: CountryNameMap[k as keyof typeof CountryMap],
+							value: v,
+						})),
+						default: '',
+						description: 'Country for proxy server',
+						displayOptions: {
+							show: {
+								useProxy: [true],
+							},
+						},
 					},
 					{
-						displayName: 'Timeout (ms)',
+						displayName: 'Solve CAPTCHAs',
+						name: 'solveCaptchas',
+						type: 'boolean',
+						default: false,
+						description: 'Whether to solve CAPTCHAs during scraping',
+					},
+					{
+						displayName: 'Timeout (Ms)',
 						name: 'timeout',
 						type: 'number',
 						default: 15000,
@@ -130,44 +166,6 @@ export class ExampleNode implements INodeType {
 						type: 'boolean',
 						default: false,
 						description: 'Whether to use a proxy for scraping',
-					},
-					{
-						displayName: 'Solve CAPTCHAs',
-						name: 'solveCaptchas',
-						type: 'boolean',
-						default: false,
-						description: 'Whether to solve CAPTCHAs during scraping',
-					},
-					{
-						displayName: 'Proxy Country',
-						name: 'proxyCountry',
-						type: 'options',
-						options: [
-							{ name: 'United States', value: 'US' },
-							{ name: 'United Kingdom', value: 'GB' },
-							{ name: 'Germany', value: 'DE' },
-							{ name: 'France', value: 'FR' },
-							{ name: 'Japan', value: 'JP' },
-						],
-						default: 'US',
-						description: 'Country for proxy server',
-						displayOptions: {
-							show: {
-								useProxy: [true],
-							},
-						},
-					},
-					{
-						displayName: 'Maximum Pages',
-						name: 'maxPages',
-						type: 'number',
-						default: 10,
-						description: 'Maximum number of pages to crawl',
-						displayOptions: {
-							show: {
-								'/operation': ['crawl'],
-							},
-						},
 					},
 				],
 			},
@@ -202,7 +200,7 @@ export class ExampleNode implements INodeType {
 							useProxy: true,
 							solveCaptchas: options.solveCaptchas || false,
 							proxyCountry: options.proxyCountry || 'US',
-					  }
+						}
 					: undefined;
 
 				let responseData: IDataObject;
