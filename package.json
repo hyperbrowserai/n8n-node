@@ -1,5 +1,5 @@
 {
-  "name": "@aharmlesspyro/n8n-nodes-hyperbrowser",
+  "name": "@a_harmless_pyro/n8n-nodes-hyperbrowser",
   "version": "0.1.0",
   "description": "n8n node for Hyperbrowser - enabling web scraping, crawling, and AI-powered data extraction in your workflows",
   "keywords": [
