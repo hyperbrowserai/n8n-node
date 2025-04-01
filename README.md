@@ -1,10 +1,20 @@
 ![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
 
-# n8n-nodes-starter
+# n8n-nodes-hyperbrowser
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](n8n.io). It includes the node linter and other dependencies.
+This repository contains a custom n8n node for [Hyperbrowser](https://docs.hyperbrowser.ai/readme), enabling powerful web scraping, crawling, and data extraction capabilities in your n8n workflows.
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+## Features
+
+- **Web Scraping**: Extract content from any webpage in various formats (HTML, Markdown, Links)
+- **Web Crawling**: Automatically crawl websites and extract data from multiple pages
+- **AI-Powered Extraction**: Use natural language queries to extract specific data from webpages
+- **Advanced Options**:
+  - Proxy support with country selection
+  - CAPTCHA solving
+  - Custom timeouts
+  - Main content extraction
+  - Configurable output formats
 
 ## Prerequisites
 
@@ -16,31 +26,40 @@ You need the following installed on your development machine:
   ```
   pnpm install n8n -g
   ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+* A Hyperbrowser API key (get one at [Hyperbrowser](https://docs.hyperbrowser.ai/readme))
 
-## Using this starter
+## Installation
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
-
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
+1. Clone this repository:
    ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
+   git clone https://github.com/<your organization>/n8n-nodes-hyperbrowser.git
    ```
-3. Run `pnpm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `pnpm lint` to check for errors or `pnpm lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+2. Install dependencies:
+   ```
+   pnpm install
+   ```
 
-## More information
+## Usage
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+1. Add your Hyperbrowser API key in n8n credentials
+2. Add the Hyperbrowser node to your workflow
+3. Configure the node with your desired operation:
+   - **Scrape**: Extract content from a single webpage
+   - **Crawl**: Automatically crawl multiple pages from a website
+   - **Extract**: Use AI to extract specific data from a webpage
+
+## Development
+
+1. Run `pnpm lint` to check for errors
+2. Run `pnpm lintfix` to automatically fix errors when possible
+3. Test your node locally following the [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) guide
+
+## Documentation
+
+For detailed information about creating n8n nodes, refer to the [n8n documentation](https://docs.n8n.io/integrations/creating-nodes/).
+
+For Hyperbrowser-specific documentation, visit the [Hyperbrowser docs](https://docs.hyperbrowser.ai/readme).
 
 ## License
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+[MIT](LICENSE.md)
