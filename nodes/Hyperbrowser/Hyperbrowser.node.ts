@@ -6,17 +6,17 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
-import { Hyperbrowser } from '@hyperbrowser/sdk';
+import { Hyperbrowser as HyperbrowserClient } from '@hyperbrowser/sdk';
 import { ScrapeFormat, Country, CreateSessionParams, ScrapeOptions } from '@hyperbrowser/sdk/types';
 // Add Node.js process type declaration
 declare const process: {
 	env: Record<string, string | undefined>;
 };
 
-export class HyperbrowserClient implements INodeType {
+export class Hyperbrowser implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Hyperbrowser',
-		name: 'hyperbrowserClient',
+		name: 'hyperbrowser',
 		icon: 'file:hyperbrowser.svg',
 		group: ['transform'],
 		version: 1,
@@ -34,6 +34,7 @@ export class HyperbrowserClient implements INodeType {
 				required: true,
 			},
 		],
+		usableAsTool: true,
 		properties: [
 			{
 				displayName: 'Operation',
@@ -44,14 +45,14 @@ export class HyperbrowserClient implements INodeType {
 					{
 						name: 'Browser Use',
 						value: 'browserUse',
-						description: 'Use browser automation with AI guidance',
+						description: 'Hyperbrowser Browser Agent using Browser-Use',
 						action: 'Use browser with AI',
 					},
 					{
 						name: 'Claude Computer Use',
 						value: 'claudeComputerUse',
 						description: 'Use Claude to control computer actions',
-						action: 'Use claude for computer control',
+						action: 'Hyperbrowser Browser Agent using Claude computer-use',
 					},
 					{
 						name: 'Crawl',
@@ -69,7 +70,7 @@ export class HyperbrowserClient implements INodeType {
 						name: 'OpenAI CUA',
 						value: 'openaiCua',
 						description: 'Use OpenAI to control user actions',
-						action: 'Use open ai for user control',
+						action: 'Hyperbrowser Browser Agent using OpenAI CUA',
 					},
 					{
 						name: 'Scrape',
@@ -245,7 +246,7 @@ export class HyperbrowserClient implements INodeType {
 		const returnData: INodeExecutionData[] = [];
 
 		const credentials = await this.getCredentials('hyperbrowserApi');
-		const client = new Hyperbrowser({
+		const client = new HyperbrowserClient({
 			apiKey: credentials.apiKey as string,
 		});
 
