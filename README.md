@@ -31,14 +31,7 @@ You need the following information to get started with the hyperbrowser n8n node
 
 ## Installation
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/<your organization>/n8n-nodes-hyperbrowser.git
-   ```
-2. Install dependencies:
-   ```
-   pnpm install
-   ```
+You can install this node from npm as a community node on n8n. Search for `n8n-nodes-hyperbrowser`
 
 ## Usage
 
