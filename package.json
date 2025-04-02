@@ -1,15 +1,18 @@
 {
   "name": "n8n-nodes-hyperbrowser",
-  "version": "0.1.14",
-  "description": "MCP nodes for n8n ",
+  "version": "0.0.3",
+  "description": "n8n node for Hyperbrowser - enabling web scraping, crawling, and AI-powered data extraction in your workflows",
   "keywords": [
     "n8n-community-node-package",
-    "mcp",
-    "mcp-client",
-    "mcp-client-node",
-    "mcp-client-n8n",
-    "mcp-client-n8n-node",
-    "mcp-client-n8n-node-package"
+    "hyperbrowser",
+    "browser-agent",
+    "web-scrapiing",
+    "openai-cua",
+    "claude-computer-use",
+    "browser-use",
+    "scraping",
+    "extraction",
+    "crawl"
   ],
   "license": "MIT",
   "homepage": "",
@@ -19,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nerding-io/n8n-nodes-mcp.git"
+    "url": "https://github.com/hyperbrowserai/n8n-node.git"
   },
   "main": "index.js",
   "scripts": {
@@ -37,8 +40,6 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/HyperbrowserClientApi.credentials.js",
-      "dist/credentials/HyperbrowserClientSseApi.credentials.js",
       "dist/credentials/HyperbrowserApi.credentials.js"
     ],
     "nodes": [
