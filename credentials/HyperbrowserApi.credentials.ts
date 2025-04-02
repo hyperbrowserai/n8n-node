@@ -9,6 +9,8 @@ export class HyperbrowserApi implements ICredentialType {
 	name = 'hyperbrowserApi';
 	displayName = 'Hyperbrowser API';
 	documentationUrl = 'https://docs.hyperbrowser.ai/';
+
+	icon = 'file:hyperbrowser.svg' as const;
 	properties: INodeProperties[] = [
 		{
 			displayName: 'API Key',
@@ -43,4 +45,4 @@ export class HyperbrowserApi implements ICredentialType {
 			},
 		},
 	};
-} 
+}

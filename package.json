@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-hyperbrowser",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "n8n node for Hyperbrowser - enabling web scraping, crawling, and AI-powered data extraction in your workflows",
   "keywords": [
     "n8n-community-node-package",

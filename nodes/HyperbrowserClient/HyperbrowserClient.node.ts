@@ -17,6 +17,7 @@ export class HyperbrowserClient implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Hyperbrowser',
 		name: 'hyperbrowserClient',
+		icon: 'file:hyperbrowser.svg',
 		group: ['transform'],
 		version: 1,
 		description: 'Interact with websites using Hyperbrowser',
