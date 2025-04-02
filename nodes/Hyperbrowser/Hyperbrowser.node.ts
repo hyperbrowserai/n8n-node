@@ -46,13 +46,13 @@ export class Hyperbrowser implements INodeType {
 						name: 'Browser Use',
 						value: 'browserUse',
 						description: 'Hyperbrowser Browser Agent using Browser-Use',
-						action: 'Hyperbrowser Browser Agent using Browser-Use agent',
+						action: 'Hyperbrowser browser agent using browser use agent',
 					},
 					{
 						name: 'Claude Computer Use',
 						value: 'claudeComputerUse',
 						description: 'Use Claude to control computer actions',
-						action: 'Hyperbrowser Browser Agent using Claude computer-use',
+						action: 'Hyperbrowser browser agent using claude computer use',
 					},
 					{
 						name: 'Crawl',
@@ -70,7 +70,7 @@ export class Hyperbrowser implements INodeType {
 						name: 'OpenAI CUA',
 						value: 'openaiCua',
 						description: 'Use OpenAI to control user actions',
-						action: 'Hyperbrowser Browser Agent using OpenAI CUA',
+						action: 'Hyperbrowser browser agent using open ai cua',
 					},
 					{
 						name: 'Scrape',
