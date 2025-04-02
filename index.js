@@ -1,8 +1,12 @@
 // This file ensures n8n can find and load your nodes and credentials
-const { Hyperbrowser } = require('./dist/Hyperbrowser.node.js');
+const { HyperbrowserClient } = require('./dist/nodes/HyperbrowserClient/HyperbrowserClient.node.js');
 
 module.exports = {
 	nodeTypes: {
-		hyperbrowser: Hyperbrowser,
-	}
+		hyperbrowserClient: HyperbrowserClient,
+	},
+	credentialTypes: {
+		hyperbrowserClientApi: require('./dist/credentials/HyperbrowserClientApi.credentials.js').HyperbrowserClientApi,
+		hyperbrowserClientSseApi: require('./dist/credentials/HyperbrowserClientSseApi.credentials.js').HyperbrowserClientSseApi,
+	},
 };
