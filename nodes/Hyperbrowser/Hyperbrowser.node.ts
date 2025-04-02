@@ -46,7 +46,7 @@ export class Hyperbrowser implements INodeType {
 						name: 'Browser Use',
 						value: 'browserUse',
 						description: 'Hyperbrowser Browser Agent using Browser-Use',
-						action: 'Use browser with AI',
+						action: 'Hyperbrowser Browser Agent using Browser-Use agent',
 					},
 					{
 						name: 'Claude Computer Use',
@@ -271,7 +271,7 @@ export class Hyperbrowser implements INodeType {
 							useProxy: true,
 							solveCaptchas: options.solveCaptchas || false,
 							proxyCountry: options.proxyCountry || 'US',
-					  }
+						}
 					: undefined;
 
 				let responseData: IDataObject;
