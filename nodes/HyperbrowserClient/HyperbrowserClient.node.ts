@@ -16,7 +16,7 @@ declare const process: {
 export class HyperbrowserClient implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Hyperbrowser',
-		name: 'hyperbrowser',
+		name: 'hyperbrowserClient',
 		group: ['transform'],
 		version: 1,
 		description: 'Interact with websites using Hyperbrowser',
@@ -41,10 +41,16 @@ export class HyperbrowserClient implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Scrape',
-						value: 'scrape',
-						description: 'Scrape a URL',
-						action: 'Scrape a URL',
+						name: 'Browser Use',
+						value: 'browserUse',
+						description: 'Use browser automation with AI guidance',
+						action: 'Use browser with AI',
+					},
+					{
+						name: 'Claude Computer Use',
+						value: 'claudeComputerUse',
+						description: 'Use Claude to control computer actions',
+						action: 'Use claude for computer control',
 					},
 					{
 						name: 'Crawl',
@@ -59,22 +65,16 @@ export class HyperbrowserClient implements INodeType {
 						action: 'Extract data from a webpage',
 					},
 					{
-						name: 'Browser Use',
-						value: 'browserUse',
-						description: 'Use browser automation with AI guidance',
-						action: 'Use browser with AI',
-					},
-					{
-						name: 'Claude Computer Use',
-						value: 'claudeComputerUse',
-						description: 'Use Claude to control computer actions',
-						action: 'Use Claude for computer control',
-					},
-					{
 						name: 'OpenAI CUA',
 						value: 'openaiCua',
 						description: 'Use OpenAI to control user actions',
-						action: 'Use OpenAI for user control',
+						action: 'Use open ai for user control',
+					},
+					{
+						name: 'Scrape',
+						value: 'scrape',
+						description: 'Scrape a URL',
+						action: 'Scrape a URL',
 					},
 				],
 				default: 'scrape',
@@ -127,6 +127,18 @@ export class HyperbrowserClient implements INodeType {
 				placeholder: 'Add Option',
 				default: {},
 				options: [
+					{
+						displayName: 'Max Steps',
+						name: 'maxSteps',
+						type: 'number',
+						default: 25,
+						description: 'Maximum number of steps the agent should have to complete the task',
+						displayOptions: {
+							show: {
+								'/operation': ['browserUse', 'claudeComputerUse', 'openaiCua'],
+							},
+						},
+					},
 					{
 						displayName: 'Maximum Pages',
 						name: 'maxPages',
@@ -219,18 +231,6 @@ export class HyperbrowserClient implements INodeType {
 						displayOptions: {
 							show: {
 								'/operation': ['browserUse'],
-							},
-						},
-					},
-					{
-						displayName: 'Max Steps',
-						name: 'maxSteps',
-						type: 'number',
-						default: 25,
-						description: 'Maximum number of steps the agent should have to complete the task.',
-						displayOptions: {
-							show: {
-								'/operation': ['browserUse', 'claudeComputerUse', 'openaiCua'],
 							},
 						},
 					},
