@@ -5,12 +5,11 @@ import type {
 	INodeTypeDescription,
 	IDataObject,
 } from 'n8n-workflow';
-import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 import { Hyperbrowser } from '@hyperbrowser/sdk';
 import { CreateSessionParams, Country, ScrapeOptions, ScrapeFormat } from '@hyperbrowser/sdk/types';
-import { CountryMap, CountryNameMap } from './data';
 
-export class ExampleNode implements INodeType {
+export default class HyperbrowserNode implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Hyperbrowser',
 		name: 'hyperbrowser',
@@ -20,8 +19,10 @@ export class ExampleNode implements INodeType {
 		defaults: {
 			name: 'Hyperbrowser',
 		},
-		inputs: [NodeConnectionType.Main], // eslint-disable-line n8n-nodes-base/node-class-description-inputs-wrong-regular-node
-		outputs: [NodeConnectionType.Main], // eslint-disable-line n8n-nodes-base/node-class-description-outputs-wrong
+		// @ts-ignore
+		inputs: ['main'],
+		// @ts-ignore
+		outputs: ['main'],
 		credentials: [
 			{
 				name: 'hyperbrowserApi',
@@ -133,11 +134,11 @@ export class ExampleNode implements INodeType {
 					{
 						displayName: 'Proxy Country',
 						name: 'proxyCountry',
-						type: 'options',
-						options: Object.entries(CountryMap).map(([k, v]) => ({
-							name: CountryNameMap[k as keyof typeof CountryMap],
-							value: v,
-						})),
+						type: 'string',
+						// options: Object.entries(CountryMap).map(([k, v]) => ({
+						// 	name: CountryNameMap[k as keyof typeof CountryMap],
+						// 	value: v,
+						// })),
 						default: '',
 						description: 'Country for proxy server',
 						displayOptions: {
