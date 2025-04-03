@@ -98,10 +98,23 @@ export class Hyperbrowser implements INodeType {
 			{
 				displayName: 'Extraction Query',
 				name: 'extractionQuery',
-				type: 'json',
-				required: true,
-				default: '',
+				type: 'string',
+				required: false,
+				default: null,
 				description: 'What data to extract from the webpage (e.g., "Extract all product prices")',
+				displayOptions: {
+					show: {
+						operation: ['extract'],
+					},
+				},
+			},
+			{
+				displayName: 'Extraction Schema',
+				name: 'extractionSchema',
+				type: 'json',
+				required: false,
+				default: null,
+				description: 'Schema of data to extract from the page (e.g., "Extract all product prices")',
 				displayOptions: {
 					show: {
 						operation: ['extract'],
@@ -271,7 +284,7 @@ export class Hyperbrowser implements INodeType {
 							useProxy: true,
 							solveCaptchas: options.solveCaptchas || false,
 							proxyCountry: options.proxyCountry || 'US',
-						}
+					  }
 					: undefined;
 
 				let responseData: IDataObject;
@@ -316,9 +329,11 @@ export class Hyperbrowser implements INodeType {
 				} else if (operation === 'extract') {
 					const url = this.getNodeParameter('url', i) as string;
 					const extractionQuery = this.getNodeParameter('extractionQuery', i) as string;
+					const extractionSchema = this.getNodeParameter('extractionSchema', i) as string;
 					const response = await client.extract.startAndWait({
 						urls: [url],
 						prompt: extractionQuery,
+						schema: extractionSchema ? JSON.parse(extractionSchema) : null,
 						sessionOptions,
 					});
 
