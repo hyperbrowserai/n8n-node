@@ -1,0 +1,276 @@
+{
+    "nodes": [
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                -460,
+                20
+            ],
+            "id": "fef8709b-e441-4fb1-b905-d72680b505c3",
+            "name": "When clicking ‘Test workflow’"
+        },
+        {
+            "parameters": {
+                "operation": "browserUse",
+                "task": "Go to amazon.com and search for macbook air 256gb. Return to me only the price for it and nothing else. Get me results only for the top result",
+                "options": {}
+            },
+            "type": "CUSTOM.hyperbrowser",
+            "typeVersion": 1,
+            "position": [
+                -300,
+                20
+            ],
+            "id": "8345dd4b-00d0-4bba-9649-9aa8039b0ca9",
+            "name": "Hyperbrowser",
+            "credentials": {
+                "hyperbrowserApi": {
+                    "id": "VLq2li4FKeT6eCqb",
+                    "name": "Hyperbrowser account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "Return to me only the price of the object from the next message. Return it only as {\"price\":number}",
+                            "role": "system"
+                        },
+                        {
+                            "content": "={{ $json.actions }}"
+                        }
+                    ]
+                },
+                "jsonOutput": true,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -140,
+                20
+            ],
+            "id": "dab21deb-66a9-476a-b811-ee4bee38a237",
+            "name": "OpenAI",
+            "credentials": {
+                "openAiApi": {
+                    "id": "p6Qb34Z2uRUpidIF",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "get",
+                "propertyName": "previousPrice",
+                "key": "price",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.redis",
+            "typeVersion": 1,
+            "position": [
+                180,
+                20
+            ],
+            "id": "bdb46c61-7e5f-4a2b-9b86-4d8846c8f4e7",
+            "name": "Redis1",
+            "credentials": {
+                "redis": {
+                    "id": "Zdqp94eKp7Agz7K2",
+                    "name": "Redis account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "set",
+                "key": "price",
+                "value": "={{ $('OpenAI').item.json.message.content.price }}",
+                "keyType": "string"
+            },
+            "type": "n8n-nodes-base.redis",
+            "typeVersion": 1,
+            "position": [
+                560,
+                260
+            ],
+            "id": "9a480004-44db-4f3a-a45d-26471d1251d5",
+            "name": "Redis2",
+            "credentials": {
+                "redis": {
+                    "id": "Zdqp94eKp7Agz7K2",
+                    "name": "Redis account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "ebe0b6df-1bad-4992-a63b-d268dbffa7a4",
+                            "leftValue": "={{ $json.previousPrice }}",
+                            "rightValue": "={{ $('OpenAI').item.json.message.content.price }}",
+                            "operator": {
+                                "type": "number",
+                                "operation": "gt"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                520,
+                20
+            ],
+            "id": "0c5f77b9-db2e-49a0-9c55-9919f604f890",
+            "name": "If"
+        },
+        {
+            "parameters": {
+                "jsCode": "return [{previousPrice:parseInt($input.first().json.previousPrice)}]"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                340,
+                20
+            ],
+            "id": "3c13b82b-9689-4b2d-ae93-5966f404e2b7",
+            "name": "Code"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://webhook.site/ea80cfb5-dbf7-4fce-b6d8-2423e5dc0ad8",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "priceDropped",
+                            "value": "true"
+                        },
+                        {
+                            "name": "price",
+                            "value": "={{ $('OpenAI').item.json.message.content.price }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                740,
+                20
+            ],
+            "id": "54c2914e-79fb-498c-915f-ecb54740c914",
+            "name": "HTTP Request"
+        }
+    ],
+    "connections": {
+        "When clicking ‘Test workflow’": {
+            "main": [
+                [
+                    {
+                        "node": "Hyperbrowser",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Hyperbrowser": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI": {
+            "main": [
+                [
+                    {
+                        "node": "Redis1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Redis1": {
+            "main": [
+                [
+                    {
+                        "node": "Code",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If": {
+            "main": [
+                [
+                    {
+                        "node": "Redis2",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "HTTP Request",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Redis2",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Code": {
+            "main": [
+                [
+                    {
+                        "node": "If",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "04cb3d6000f1da654fccaff33f9482d4f1c0af555ba9388aa656ace2a322c77e"
+    }
+}

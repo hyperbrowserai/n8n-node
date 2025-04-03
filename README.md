@@ -1,6 +1,6 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+[![Banner image](/assets/dark_bg_logo.webp)](https://app.hyperbrowser.ai)
 
-# n8n-nodes-hyperbrowser
+# @hyperbrowser/n8n-nodes
 
 This repository contains a custom n8n node for [Hyperbrowser](https://docs.hyperbrowser.ai/readme), enabling powerful web scraping, crawling, and data extraction capabilities in your n8n workflows.
 
@@ -31,7 +31,7 @@ You need the following information to get started with the hyperbrowser n8n node
 
 ## Installation
 
-You can install this node from npm as a community node on n8n. Search for `n8n-nodes-hyperbrowser`
+You can install this node from npm as a community node on n8n. Search for `@hyperbrowser/n8n-nodes`
 
 ## Usage
 
@@ -44,6 +44,10 @@ You can install this node from npm as a community node on n8n. Search for `n8n-n
    - **Browser Use**: Control browser actions with AI guidance using the Browser-Use agent
    - **Claude Computer Use**: Use Claude to control computer actions using the Computer Use agent
    - **OpenAI CUA**: Use OpenAI to control user actions using the CUA agent
+
+## Examples
+
+A few example n8n flows are provided in the [examples directory](/examples/). Feel free to explore and play with them.
 
 ## Documentation
 

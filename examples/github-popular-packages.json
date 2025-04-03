@@ -1,0 +1,273 @@
+{
+    "nodes": [
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                -1800,
+                -20
+            ],
+            "id": "a5b2a405-d7ab-49a6-b69f-232d5462f762",
+            "name": "When clicking ‘Test workflow’"
+        },
+        {
+            "parameters": {
+                "fieldToSplitOut": "extractedData.packages",
+                "include": "={{ $json.extractedData.packages }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.splitOut",
+            "typeVersion": 1,
+            "position": [
+                -1400,
+                -20
+            ],
+            "id": "c7940bb0-2db6-464c-9327-e773df4825ec",
+            "name": "Split Out"
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Does the package originate from a well-known corporation. Answer as {'name':<URL>, 'corporation': bool, 'corporationName': string } ? Package=> {{ $json['extractedData.packages'].url }}"
+                        }
+                    ]
+                },
+                "jsonOutput": true,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -1220,
+                -20
+            ],
+            "id": "ed3a0280-3fbc-487a-be87-48851c3a3a43",
+            "name": "OpenAI",
+            "credentials": {
+                "openAiApi": {
+                    "id": "p6Qb34Z2uRUpidIF",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "9d54e6f0-ea8e-4175-8665-e32ebc21ee38",
+                            "leftValue": "={{ $json.message.content.corporation }}",
+                            "rightValue": "true",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.filter",
+            "typeVersion": 2.2,
+            "position": [
+                -900,
+                -20
+            ],
+            "id": "ac7c3377-e29a-4567-a461-2028e047704c",
+            "name": "Filter"
+        },
+        {
+            "parameters": {
+                "mode": "combine",
+                "combineBy": "combineByPosition",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.merge",
+            "typeVersion": 3.1,
+            "position": [
+                -400,
+                0
+            ],
+            "id": "cb988a4f-6383-47b8-a1b5-10e546a58ebe",
+            "name": "Merge"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://webhook.site/ea80cfb5-dbf7-4fce-b6d8-2423e5dc0ad8",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "package",
+                            "value": "={{ $json.message.content }}"
+                        },
+                        {
+                            "name": "business",
+                            "value": "={{ $('Hyperbrowser - Browser Agent').item.json.actions }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -220,
+                0
+            ],
+            "id": "bde0289e-4d7a-451c-82b8-e73a4dc10698",
+            "name": "HTTP Request"
+        },
+        {
+            "parameters": {
+                "operation": "extract",
+                "url": "https://github.com/trending",
+                "extractionQuery": "Extract the title, url, and stars of the packages",
+                "extractionSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"packages\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"title\": {\n                        \"type\": \"string\"\n                    },\n                    \"url\": {\n                        \"type\": \"string\"\n                    },\n                    \"stars\": {\n                        \"type\": \"number\"\n                    }\n                },\n                \"required\": [\n                    \"title\",\n                    \"url\",\n                    \"stars\"\n                ]\n            }\n        }\n    },\n    \"required\": [\n        \"packages\"\n    ]\n}",
+                "options": {}
+            },
+            "type": "CUSTOM.hyperbrowser",
+            "typeVersion": 1,
+            "position": [
+                -1580,
+                -20
+            ],
+            "id": "e1bd1f53-67c3-4507-aab7-86abc69fd1fd",
+            "name": "Hyperbrowser - Extract",
+            "credentials": {
+                "hyperbrowserApi": {
+                    "id": "VLq2li4FKeT6eCqb",
+                    "name": "Hyperbrowser account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "browserUse",
+                "task": "=Go to the website for  {{ $json.message.content.corporationName }} and tell me what it's main business is",
+                "options": {}
+            },
+            "type": "CUSTOM.hyperbrowser",
+            "typeVersion": 1,
+            "position": [
+                -640,
+                100
+            ],
+            "id": "faaee4ff-9e80-4f9d-9810-02d0c65599bd",
+            "name": "Hyperbrowser - Browser Agent",
+            "credentials": {
+                "hyperbrowserApi": {
+                    "id": "VLq2li4FKeT6eCqb",
+                    "name": "Hyperbrowser account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "When clicking ‘Test workflow’": {
+            "main": [
+                [
+                    {
+                        "node": "Hyperbrowser - Extract",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Split Out": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI": {
+            "main": [
+                [
+                    {
+                        "node": "Filter",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Filter": {
+            "main": [
+                [
+                    {
+                        "node": "Hyperbrowser - Browser Agent",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Merge": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP Request",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Hyperbrowser - Extract": {
+            "main": [
+                [
+                    {
+                        "node": "Split Out",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Hyperbrowser - Browser Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 1
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "04cb3d6000f1da654fccaff33f9482d4f1c0af555ba9388aa656ace2a322c77e"
+    }
+}

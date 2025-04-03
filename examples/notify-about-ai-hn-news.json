@@ -1,0 +1,190 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "path": "a227afae-e16e-44c2-bb5c-e69fe553b455",
+                "options": {}
+            },
+            "id": "cf9fcb7d-9894-4687-a0ab-011f458e26b3",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "position": [
+                0,
+                80
+            ],
+            "webhookId": "a227afae-e16e-44c2-bb5c-e69fe553b455",
+            "typeVersion": 2
+        },
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {}
+                    ]
+                }
+            },
+            "id": "ec997dba-3ee7-428e-80c7-ba12618b6527",
+            "name": "Schedule Trigger",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "position": [
+                0,
+                240
+            ],
+            "typeVersion": 1.2
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.manualTrigger",
+            "typeVersion": 1,
+            "position": [
+                0,
+                -80
+            ],
+            "id": "e48f1d51-5294-4531-8009-e4dfd877a7c3",
+            "name": "When clicking ‘Test workflow’"
+        },
+        {
+            "parameters": {
+                "url": "https://news.ycombinator.com/",
+                "options": {}
+            },
+            "type": "CUSTOM.hyperbrowser",
+            "typeVersion": 1,
+            "position": [
+                320,
+                80
+            ],
+            "id": "47df0452-7ab0-4079-a4ef-aa4dae2e5468",
+            "name": "Hyperbrowser",
+            "credentials": {
+                "hyperbrowserApi": {
+                    "id": "VLq2li4FKeT6eCqb",
+                    "name": "Hyperbrowser account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O-MINI"
+                },
+                "messages": {
+                    "values": [
+                        {
+                            "content": "Is there any AI news ? Response as n JSON array containing the urls, and the titles of the links",
+                            "role": "system"
+                        },
+                        {
+                            "content": "={{ $json.content.markdown }}"
+                        }
+                    ]
+                },
+                "jsonOutput": true,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                540,
+                80
+            ],
+            "id": "e142d040-f9e0-4a84-ba59-298e28763af2",
+            "name": "OpenAI",
+            "credentials": {
+                "openAiApi": {
+                    "id": "p6Qb34Z2uRUpidIF",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://webhook.site/ea80cfb5-dbf7-4fce-b6d8-2423e5dc0ad8",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "news",
+                            "value": "={{ $json.message.content.AI_News }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                980,
+                80
+            ],
+            "id": "57debefb-b9fa-4959-8b9c-0153fedbf3fe",
+            "name": "HTTP Request"
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Hyperbrowser",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Schedule Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Hyperbrowser",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "When clicking ‘Test workflow’": {
+            "main": [
+                [
+                    {
+                        "node": "Hyperbrowser",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Hyperbrowser": {
+            "main": [
+                [
+                    {
+                        "node": "OpenAI",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP Request",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "04cb3d6000f1da654fccaff33f9482d4f1c0af555ba9388aa656ace2a322c77e"
+    }
+}
