@@ -1,4 +1,6 @@
-[![Banner image](/assets/dark_bg_logo.webp)](https://app.hyperbrowser.ai)
+[![Termux Logo](/assets/dark_bg_logo.webp#gh-dark-mode-only)](https://app.hyperbrowser.ai)
+[![Termux Logo](/assets/light_bg_logo.webp#gh-light-mode-only)](https://app.hyperbrowser.ai)
+
 
 # @hyperbrowser/n8n-nodes
 
