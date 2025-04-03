@@ -1,5 +1,8 @@
-![Termux Logo](/assets/dark_bg_logo.webp#gh-dark-mode-only)
-![Termux Logo](/assets/light_bg_logo.webp#gh-light-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hyperbrowserai/n8n-node/refs/heads/master/assets/dark_bg_logo.webp">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hyperbrowserai/n8n-node/refs/heads/master/assets/light_bg_logo.webp">
+  <img alt="Logo of Hyperbrowser" src="https://raw.githubusercontent.com/hyperbrowserai/n8n-node/refs/heads/master/assets/dark_bg_logo.webp">
+</picture>
 
 
 # @hyperbrowser/n8n-nodes
