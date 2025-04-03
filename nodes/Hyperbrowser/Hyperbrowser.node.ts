@@ -99,8 +99,7 @@ export class Hyperbrowser implements INodeType {
 				displayName: 'Extraction Query',
 				name: 'extractionQuery',
 				type: 'string',
-				required: false,
-				default: null,
+				default: '',
 				description: 'What data to extract from the webpage (e.g., "Extract all product prices")',
 				displayOptions: {
 					show: {
@@ -112,7 +111,6 @@ export class Hyperbrowser implements INodeType {
 				displayName: 'Extraction Schema',
 				name: 'extractionSchema',
 				type: 'json',
-				required: false,
 				default: null,
 				description: 'Schema of data to extract from the page (e.g., "Extract all product prices")',
 				displayOptions: {
